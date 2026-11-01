@@ -1,0 +1,13 @@
+# Veri ve buyuk dosyalar depoya eklenmez (Drive'da durur)
+data/
+*.pt
+*.pth
+*.npy
+*.mat
+*.zip
+
+# Python / Jupyter
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.DS_Store
