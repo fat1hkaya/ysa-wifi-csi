@@ -16,7 +16,7 @@ Veri depoya **eklenmez**. Herkes Google Drive'da aynı yolu kullanır:
 ## Klasör yapısı
 | Klasör | İçerik |
 |---|---|
-| `src/` | Ortak kod (`ortak.py`). Yalnızca Fatih değiştirir. |
+| `src/` | Ortak kod (`ortak.py`, `ozellik.py`). Yalnızca Fatih değiştirir. |
 | `notebooks/` | Herkesin deney notebook'ları. Ad: `<hafta>_<ekip>_<is>.ipynb` (örn. `H3_B_bilstm.ipynb`) |
 | `results/` | `sonuclar.csv` ve grafikler |
 | `report/` | Rapor taslakları, veri sözlüğü |
@@ -25,6 +25,21 @@ Veri depoya **eklenmez**. Herkes Google Drive'da aynı yolu kullanır:
 ## Başlangıç (Colab)
 1. `notebooks/H1_A_veri_kontrol.ipynb` dosyasını Colab'da aç.
 2. Hücreleri sırayla çalıştır. Son hücre veri şekillerini ve sınıf dağılımını yazdırmalı.
+
+## H2: Veri analizi ve klasik makine öğrenmesi
+1. **Önce bir kişi (Fatih)** `notebooks/H2_A_veri_analizi.ipynb` çalıştırır: veri incelemesi, grafikler, 910 öznitelik → Drive'a `data/ozellik_uthar.npz`.
+2. **Herkes** `notebooks/H2_ML_sablon.ipynb` açar, en üstte `AD` ve `ALGORITMA` yazar, *Run all*.
+3. Sonuçlar otomatik olarak Drive'daki `results/sonuclar.csv` dosyasına eklenir.
+Özniteliklerin anlamı: [`report/veri_sozlugu.md`](report/veri_sozlugu.md)
+
+| Kişi | Algoritma |
+|---|---|
+| Fatih Kaya | Random Forest (`rf`) |
+| Taha Yasir Güzeldal | SVM (`svm`) |
+| Yunus Emir Gemici | KNN (`knn`) |
+| Mümün Can Yıldız | Lojistik Regresyon (`lr`) |
+| Mehmet Selim Özdemir | Gradient Boosting (`gb`) |
+| Muhammet Emin Zora | Karar Ağacı (`dt`) |
 
 ## Ortak sabitler
 `SEED = 42` (nihai sonuçlar 42, 0, 123 ile) · Adam, lr = 1e-3 · batch 64 · en fazla 100 epoch, erken durdurma (sabır 15)

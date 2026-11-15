@@ -1,15 +1,19 @@
 """Projenin ortak fonksiyonlari. Herkes veriyi bu dosyayla okur, boler ve degerlendirir.
 Bu dosyayi yalnizca Fatih degistirir; degisiklik istegi WhatsApp grubuna yazilir."""
+import csv
 import glob
+import os
 import numpy as np
 from sklearn.metrics import (accuracy_score, f1_score, precision_score,
                              recall_score, confusion_matrix)
 
 SEED = 42
-VERI_YOLU = "/content/drive/MyDrive/ysa-wifi-csi/data/UT_HAR"
-# UT-HAR sinif sirasi; H1 veri kontrolunden sonra dogrulanacak
+PROJE_YOLU = os.environ.get("YSA_PROJE_YOLU", "/content/drive/MyDrive/ysa-wifi-csi")
+VERI_YOLU = f"{PROJE_YOLU}/data/UT_HAR"
+SONUC_YOLU = f"{PROJE_YOLU}/results/sonuclar.csv"   # herkes Drive'daki bu dosyaya yazar
+# UT-HAR sinif sirasi (H1 veri kontrolunde dogrulandi)
 SINIFLAR = ["yatma", "dusme", "yurume", "egilip_alma", "kosma", "oturma", "kalkma"]
-DUSME = 1  # dusme sinifinin etiket numarasi; H1 veri kontrolunden sonra dogrulanacak
+DUSME = 1  # dusme sinifinin etiket numarasi (H1: oran 0.089, dogrulandi)
 
 
 def uthar_yukle(kok=VERI_YOLU):
@@ -47,3 +51,19 @@ def degerlendir(y_gercek, y_tahmin, ikili=False):
         s["dusme_precision"] = precision_score(y_gercek, y_tahmin, pos_label=1, zero_division=0)
         s["dusme_f1"] = f1_score(y_gercek, y_tahmin, pos_label=1)
     return s
+
+
+SUTUNLAR = ["deney", "gorev", "model", "tohum", "esik", "accuracy", "macro_f1",
+            "dusme_recall", "dusme_precision", "dusme_f1", "parametre", "cikarim_ms", "yazan"]
+
+
+def sonuc_kaydet(satir, yol=None):
+    """Bir deney sonucunu ortak sonuclar.csv dosyasina ekler (yoksa basligiyla olusturur)."""
+    yol = yol or SONUC_YOLU
+    os.makedirs(os.path.dirname(yol), exist_ok=True)
+    yeni = not os.path.exists(yol) or os.path.getsize(yol) == 0
+    with open(yol, "a", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=SUTUNLAR, extrasaction="ignore")
+        if yeni:
+            w.writeheader()
+        w.writerow({k: satir.get(k, "") for k in SUTUNLAR})
